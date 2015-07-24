@@ -1,0 +1,104 @@
+#include <QCoreApplication>
+#include <QVector>
+#include <QTime>
+#include <iostream>
+
+#include "funcs.cpp"
+#include "event.h"
+#include "place.h"
+#include "task.h"
+#include "matrixplaces.h"
+
+int main(int argc, char *argv[])
+{
+
+
+    //Initialize places
+    int placesSize = 0;
+    do {
+        std::cin >> placesSize;
+        if (placesSize <= 0){
+            std::cout << "Wrong places size\n";
+        }
+    } while(placesSize <= 0);
+
+    QVector<Place> places(0);
+    std::string strbuf = "";
+    Place *placeBuf;
+    for (int i = 0; i < placesSize; i++){
+        std::cin >> strbuf;
+        placeBuf = new Place(strbuf);
+        places.push_back(*placeBuf);
+    }
+//===================================================================================================================
+
+    //Initialize matrix of distances
+    MatrixPlaces mtxPlcs();
+//===================================================================================================================
+
+    //Initialize events
+    int eventCount = 0;
+    do {
+        std::cin >> eventCount;
+        if(eventCount < 0){
+            std::cout << "Wrong number of events\n";
+        }
+    } while(eventCount < 0);
+
+    QVector<Event> events(0);
+    QTime startTime, endTime;
+    char *timeBuf = new char [8];
+    Event *eventBuf;
+
+    for(int i = 0; i < eventCount; i++){
+        std::cin >> timeBuf;
+        startTime.fromString(QString(timeBuf),"hh:mm:ss");
+        std::cin >> timeBuf;
+        endTime.fromString(QString(timeBuf),"hh:mm:ss");
+
+        eventBuf = new Event(startTime, endTime, places[0]);
+        events.push_back(*eventBuf);
+    }
+//===================================================================================================================
+
+    //Generate random population
+    int populSize = 0;
+    do {
+        std::cin >> populSize;
+        if (populSize < 0){
+            std::cout << "Wrong population size\n";
+        }
+    } while(populSize < 0);
+
+
+    QVector<Task> tasks(0);
+    QVector<Place> taskPlaces(0);
+    Task *taskBuf;
+    for (int i = 0; i < populSize; i++){
+        taskBuf = new Task(taskPlaces, startTime, endTime);
+        tasks.push_back(*taskBuf);
+    }
+//===================================================================================================================
+
+    //Prepare to cycle
+    QTime qt;
+    qt.start();
+    int iCycles = 0;
+
+    do{
+        //Selection
+
+        //Crossover
+
+        //Mutation
+
+        //Survivle
+
+        //Try to exit from cycle
+        iCycles++;
+    }while(TimeIsNotOut(qt, 1) && CyclesIsNotOut(iCycles, 1000));
+
+    //Print Results
+    system("pause");
+    return 0;
+}
